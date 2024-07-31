@@ -10,10 +10,11 @@
    - [Windows1 (172.16.14.50)](#windows1-172161450)
    - [Linux Server (172.16.14.52)](#linux-server-172161452)
 5. [Risk Assessment](#risk-assessment)
+   - [Solution Type Definitions](#solution-type-definitions)
 6. [Recommendations](#recommendations)
-   1. [High Severity](#high-severity)
-   2. [Medium Severity](#medium-severity)
-   3. [Low Severity](#low-severity)
+   - [High Severity](#high-severity)
+   - [Medium Severity](#medium-severity)
+   - [Low Severity](#low-severity)
 7. [Conclusion](#conclusion)
 8. [References](#references)
 
@@ -35,7 +36,7 @@ The scan identified a total of 11 vulnerabilities across three hosts (Winserver,
 
 ## [Findings:](#findings)
 
-### [Winserver (172.16.14.53):](#winserver-172161453):
+### [Winserver (172.16.14.53):](#winserver-172161453)
 - **Outdated/End-of-life Scan Engine:** High severity, requires vendor fix.
 
 ![Alt text](./images/image3.png)
@@ -46,7 +47,7 @@ The scan identified a total of 11 vulnerabilities across three hosts (Winserver,
 
 ![Alt text](./images/image2.png)
 
-### [Linux Server (172.16.14.52:)](#linux-server-172161452)
+### [Linux Server (172.16.14.52):](#linux-server-172161452)
 - **Outdated/End-of-life Scan Engine:** High severity, requires vendor fix.
 - **Unprotected OSSEC/Wazuh ossec-authd:** High severity, requires workaround.
 - **HTTP Brute Force Logins with Default Credentials:** High severity, requires mitigation.
@@ -73,22 +74,68 @@ The vulnerabilities are indexed and categorized below:
 | Low      | TCP Timestamp Information Disclosure               | Linux Server            | TCP timestamp information can be used to infer OS and uptime   | Mitigation     | N/A                         | [T1040](https://attack.mitre.org/techniques/T1040/)                                     |
 | Low      | ICMP Timestamp Reply Information Disclosure        | Linux Server            | ICMP timestamp information can be used to infer OS and uptime  | Mitigation     | N/A                         | [T1040](https://attack.mitre.org/techniques/T1040/)                                     |
 
-## [Recommendations:](#recommendations)
+### [Solution Type Definitions:](#solution-type-definitions)
 
+1. **Vendor Fix:**
+   - **Definition:** A resolution provided by the software or hardware vendor, typically in the form of patches or updates, which addresses and rectifies the identified vulnerabilities.
+   - **Example:** Applying a software update released by Microsoft to fix a security bug in Windows.
+
+2. **Workaround:**
+   - **Definition:** A temporary solution that mitigates the risk of the vulnerability without fully resolving the underlying issue. This often involves configuration changes or alternative approaches to minimize exposure.
+   - **Example:** Changing configuration settings to disable a vulnerable service until an official patch is released.
+
+3. **Mitigation:**
+   - **Definition:** Actions taken to reduce the impact or likelihood of the vulnerability being exploited. These measures do not eliminate the vulnerability but lower the associated risk.
+   - **Example:** Implementing multi-factor authentication (MFA) to mitigate the risk of brute force attacks on accounts with default passwords.
+
+## [Recommendations:](#recommendations)
 ### [High Severity:](#high-severity)
-1. **Outdated/End-of-life Scan Engine:** Apply vendor fixes to update the software on Winserver, Windows1, and Linux Server.
-2. **Unprotected OSSEC/Wazuh ossec-authd:** Implement workaround to secure the authd protocol on Linux Server.
-3. **HTTP Brute Force Logins with Default Credentials:** Change default credentials and implement stronger authentication mechanisms.
+1. **Outdated/End-of-life Scan Engine (All Hosts):**
+   - **Action:** Apply vendor fixes to update the software on Winserver, Windows1, and Linux Server.
+   - **Time Frame:** **24 hours**
+   - **Details:** Obtain and install the latest supported versions of the software. Coordinate with the vendor if necessary for guidance and support.
+
+2. **Unprotected OSSEC/Wazuh ossec-authd (Linux Server):**
+   - **Action:** Implement a workaround to secure the authd protocol by configuring strong authentication and access controls.
+   - **Time Frame:** **24 hours**
+   - **Details:** Update configurations, enforce strong authentication, and restrict access to necessary users only.
+
+3. **HTTP Brute Force Logins with Default Credentials (Linux Server):**
+   - **Action:** Change default credentials to strong, unique passwords and implement stronger authentication mechanisms such as multi-factor authentication (MFA).
+   - **Time Frame:** **48 hours**
+   - **Details:** Audit all accounts, enforce strong password policies, and set up MFA. Educate users on the importance of maintaining strong passwords.
 
 ### [Medium Severity:](#medium-severity)
-1. **Deprecated TLS Protocols:** Disable TLSv1.0 and TLSv1.1 on Windows1 and enforce TLSv1.2 or higher.
-2. **SSL/TLS Renegotiation DoS Vulnerability:** Apply vendor fixes to address the DoS vulnerabilities on Linux Server.
-3. **SSL/TLS Certificate Expired:** Renew expired SSL/TLS certificates on Linux Server.
-4. **Diffie-Hellman Key Exchange Weakness:** Use stronger DH groups for key exchange on Linux Server.
+1. **Deprecated TLS Protocols (Windows1):**
+   - **Action:** Disable TLSv1.0 and TLSv1.1 and enforce TLSv1.2 or higher.
+   - **Time Frame:** **48 hours**
+   - **Details:** Update server configurations to disable outdated protocols and ensure compatibility with clients using TLSv1.2 or higher.
+
+2. **SSL/TLS Renegotiation DoS Vulnerability (Linux Server):**
+   - **Action:** Apply vendor fixes to address the DoS vulnerabilities by updating the SSL/TLS library and configurations.
+   - **Time Frame:** **72 hours**
+   - **Details:** Apply patches from the vendor and verify the effectiveness of the fixes through testing.
+
+3. **SSL/TLS Certificate Expired (Linux Server):**
+   - **Action:** Renew expired SSL/TLS certificates and ensure they are replaced before expiration in the future.
+   - **Time Frame:** **72 hours**
+   - **Details:** Acquire new certificates, update server configurations, and set reminders for future renewals.
+
+4. **Diffie-Hellman Key Exchange Weakness (Linux Server):**
+   - **Action:** Use stronger Diffie-Hellman groups for key exchange by updating server configurations to use a minimum of 2048-bit DH groups.
+   - **Time Frame:** **72 hours**
+   - **Details:** Update configuration files to use stronger DH groups and test to ensure compatibility with clients.
 
 ### [Low Severity:](#low-severity)
-1. **TCP Timestamp Information Disclosure:** Disable TCP timestamp responses on Linux Server.
-2. **ICMP Timestamp Reply Information Disclosure:** Disable ICMP timestamp replies on Linux Server.
+1. **TCP Timestamp Information Disclosure (Linux Server):**
+   - **Action:** Disable TCP timestamp responses to prevent information disclosure.
+   - **Time Frame:** **48 hours**
+   - **Details:** Modify kernel parameters to disable TCP timestamps and verify that timestamps are not being sent.
+
+2. **ICMP Timestamp Reply Information Disclosure (Linux Server):**
+   - **Action:** Disable ICMP timestamp replies to prevent information disclosure.
+   - **Time Frame:** **48 hours**
+   - **Details:** Adjust firewall rules and system configurations to block ICMP timestamp requests and verify the settings.
 
 ## [Conclusion:](#conclusion)
 Addressing the identified vulnerabilities is critical to maintaining the security and integrity of the organization's network. High-severity issues, such as outdated software and unprotected services, should be prioritized to mitigate significant risks. Implementing the recommended actions will enhance the overall security posture and reduce the likelihood of potential breaches. Regular vulnerability assessments and updates to security policies are essential to ensure ongoing protection against emerging threats.
