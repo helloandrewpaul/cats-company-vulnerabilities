@@ -30,7 +30,7 @@ The scan identified a total of 11 vulnerabilities across three hosts (Winserver,
 - **Low Severity (0-3.9):** Information disclosure issues.
 
 ## [Methodology:](#methodology)
-- **Tools Used:** OpenVAS
+- **Tools Used:** OpenVAS & Kali Linux
 - **Purpose:** Identify vulnerabilities within the specified network range.
 - **Environment:** Internal network scan targeting 172.16.14.0/24.
 
